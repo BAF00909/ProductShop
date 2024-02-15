@@ -71,7 +71,9 @@ const items = [
 
 function App() {
   return (
-    <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+    <div className="app">
+      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+    </div>
   );
 }
 
