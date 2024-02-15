@@ -1,12 +1,12 @@
 export interface IEmployee {
-    id: number,
+    id?: number,
     firstName: string,
     secondName: string,
     lastName: string,
     birthday: string,
     startDate: string,
     positionId: number,
-    finishDate: string
+    finishDate?: string
 }
 
 export interface IEmployeeData {

@@ -1,14 +1,21 @@
 import type { TableColumnsType } from 'antd';
-import { useGetAllEmployeesQuery } from "../../api/employee.api";
+import { useAddEmployeeMutation, useGetAllEmployeesQuery, useRemoveEmployeeMutation, useUpdateEmployeeMutation } from "../../api/employee.api";
 import { format } from "date-fns";
 import { Addfrom } from "./AddForm";
+import { Editefrom } from './EditeForm';
 import { Modal, Table } from 'antd';
 import { useMemo, useState } from "react";
-import { IEmployeeData } from "../../store/slices/types";
+import { IEmployee, IEmployeeData } from "../../store/slices/types";
+import { AppstoreAddOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import styles from './Employee.module.css';
 
 export const EmployeesPage = () => {
   const [modalIsOpen, setOpen] = useState<boolean>(false);
-  const { data: employees } = useGetAllEmployeesQuery('');
+  const [modalEditIsOpen, setModalEdite] = useState<boolean>(false);
+  const { data: employees, refetch } = useGetAllEmployeesQuery('');
+  const [addEmployee] = useAddEmployeeMutation();
+  const [removeEmployee] = useRemoveEmployeeMutation();
+  const [updateEmployee] = useUpdateEmployeeMutation();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const columns: TableColumnsType<IEmployeeData> = useMemo(() => ([
@@ -45,28 +52,60 @@ export const EmployeesPage = () => {
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: IEmployeeData[]) => {
       setSelectedRowKeys(selectedRowKeys);
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     }
   };
+  const addNewEmployee = (data: IEmployee) => {
+    addEmployee(data).then(res => {
+      refetch();
+      setOpen(false);
+    }).catch(error => { console.log(error) });
+  }
+  const removeEmployeeById = (id: number | string | bigint) => {
+    removeEmployee(id).then(res => {
+      refetch();
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+  const updateSelectedEmployee = (data: IEmployee) => {
+    updateEmployee(data).then(res => {
+      refetch();
+      setModalEdite(false);
+    }).catch(error => { console.log(error) });
+  }
   console.log(selectedRowKeys);
   return (
     <>
       <h1>Сотрудники</h1>
       <Modal
+        title='Добавить запись'
         open={modalIsOpen}
         onCancel={() => setOpen(false)}
+        footer={null}
       >
-        <Addfrom />
+        <Addfrom sendForm={addNewEmployee} />
       </Modal>
-      <button onClick={() => setOpen(true)}>add</button>
+      <Modal
+        title='Редактировать запись'
+        open={modalEditIsOpen}
+        onCancel={() => setModalEdite(false)}
+        footer={null}
+      >
+        <Editefrom id={Number(selectedRowKeys[0])} sendEditeForm={updateSelectedEmployee} />
+      </Modal>
+      <div className={styles.tableTools}>
+        <AppstoreAddOutlined onClick={() => setOpen(true)} title='Добавить запись' />
+        <EditOutlined onClick={() => selectedRowKeys.length > 0 && setModalEdite(true)} title='Редактировать запись' />
+        <DeleteOutlined onClick={() => { selectedRowKeys.length > 0 && removeEmployeeById(selectedRowKeys[0]) }} title='Удалить запись' />
+      </div>
       <Table
         columns={columns}
-        dataSource={employees?.map((item) => ({...item, key: item.id}))}
+        dataSource={employees?.map((item) => ({ ...item, key: item.id }))}
         pagination={{ pageSize: 50 }}
         rowSelection={{
           type: 'radio',
           selectedRowKeys,
-          getCheckboxProps: (record: IEmployeeData) => ({name: 'selector'}),
+          getCheckboxProps: (record: IEmployeeData) => ({ name: 'selector' }),
           ...rowSelection,
         }}
       />

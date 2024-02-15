@@ -3,14 +3,17 @@ import { useGetAllPositionsQuery } from "../../api/positions.api";
 import { IEmployee, IPosition } from "../../store/slices/types";
 import { useState } from "react";
 import { format } from "date-fns";
-import { useAddEmployeeMutation } from "../../api/employee.api";
 
-export const Addfrom = () => {
+interface IAddFormProps {
+    sendForm: (formData: IEmployee) => void
+}
+
+export const Addfrom = ({sendForm}: IAddFormProps) => {
     const { data: positions } = useGetAllPositionsQuery('');
     const [fields, setField] = useState<IEmployee>({ finishDate: '' } as IEmployee);
-    const [addEmployee] = useAddEmployeeMutation();
+    
     const submitForm = () => {
-        addEmployee(fields);
+        sendForm(fields);
     }
     const onChangeHandler = (data: Record<string, any>) => {
         setField(satte => ({ ...satte, ...data }));
@@ -39,7 +42,6 @@ export const Addfrom = () => {
                 <DatePicker
                     format="YYYY-MM-DD"
                     onChange={(e: any) => {
-                        console.log(new Date(e));
                         onChangeHandler({ birthday: format(new Date(e), 'yyyy-MM-dd') })
                     }} />
             </Form.Item>
@@ -55,13 +57,12 @@ export const Addfrom = () => {
                 <DatePicker
                     format="YYYY-MM-DD"
                     onChange={(e: any) => {
-                        console.log(e);
                         onChangeHandler({ startDate: format(new Date(e), 'yyyy-MM-dd') })
                     }} />
             </Form.Item>
-            <Form.Item wrapperCol={{ xs: { span: 24, offset: 0 }, sm: { span: 16, offset: 8 } }}>
+            <Form.Item>
                 <Button type="primary" htmlType="submit" onClick={submitForm}>
-                    Submit
+                    Отправить
                 </Button>
             </Form.Item>
         </Form>
