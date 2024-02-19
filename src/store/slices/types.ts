@@ -26,3 +26,18 @@ export interface IPosition {
     id: number,
     positionName: string
 }
+
+export interface IProvider {
+    id: number,
+    providerName: string
+}
+
+export interface IProductGroup {
+    id: number,
+    groupName: string
+}
+
+export interface IReason {
+    id: number,
+    groupName: string
+}

@@ -73,7 +73,6 @@ export const EmployeesPage = () => {
       setModalEdite(false);
     }).catch(error => { console.log(error) });
   }
-  console.log(selectedRowKeys);
   return (
     <>
       <h1>Сотрудники</h1>
