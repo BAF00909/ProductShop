@@ -77,3 +77,73 @@ export interface IProductData {
     productGroupId: number,
     supplyId: number
 }
+
+export interface ISoltProduct {
+    id: number,
+    date: string,
+    product: IProduct,
+    employee: IEmployee
+}
+
+export interface ISoltProductData {
+    date: string,
+    productId: number,
+    employeeId: number
+}
+
+export interface ISoltProductUpdate extends ISoltProductData {
+    id: number
+}
+
+export interface IOverdueProduct {
+    id: number,
+    createDate: string,
+    product: IProduct,
+    employee: IEmployee
+}
+
+export interface IOverdueProductData {
+    createDate: string,
+    productOverdueId: number,
+    employeeDecommisionId: number
+}
+
+export interface IOverdueProductUpdate extends IOverdueProductData {
+    id: number
+}
+
+export interface IReturnedProduct {
+    id: number,
+    date: string,
+    soltProduct: {
+        id: number,
+        date: string,
+        product: IProduct | null,
+        productId: number,
+        employee: {
+            id: number,
+            firstName: string,
+            secondName: string,
+            lastName: string,
+            birthday: string,
+            startDate: string,
+            finishDate: string | null,
+            position: IPosition | null,
+            positionId: number
+        },
+        employeeId: number
+    },
+    reasonReturn: IReason,
+    employee: {
+        id: 2,
+        firstName: string,
+        secondName: string,
+        lastName: string,
+        birthday: string,
+        startDate: string,
+        finishDate: string | null,
+        position: IPosition | null,
+        positionId: number
+    },
+    employeeGetterId: number
+}
