@@ -1,0 +1,13 @@
+.tableTools {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+    font-size: 25px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 8px #cccc;
+    padding: 10px;
+}
+.tableTools svg:hover {
+    color: #ccc;
+}
