@@ -120,30 +120,25 @@ export interface IReturnedProduct {
         date: string,
         product: IProduct | null,
         productId: number,
-        employee: {
-            id: number,
-            firstName: string,
-            secondName: string,
-            lastName: string,
-            birthday: string,
-            startDate: string,
-            finishDate: string | null,
-            position: IPosition | null,
-            positionId: number
-        },
+        employee: IEmployee & IEmployeeData
         employeeId: number
     },
     reasonReturn: IReason,
-    employee: {
-        id: 2,
-        firstName: string,
-        secondName: string,
-        lastName: string,
-        birthday: string,
-        startDate: string,
-        finishDate: string | null,
-        position: IPosition | null,
-        positionId: number
-    },
+    employee: IEmployee & IEmployeeData,
+    employeeGetterId: number
+}
+
+export interface IReturnedProductUpdate {
+    id: number,
+    date: string,
+    soltProductId: number,
+    reasonReturnId: number,
+    employeeGetterId: number
+}
+
+export interface IReturnedProductData {
+    date: string,
+    soltProductId: number,
+    reasonReturnId: number,
     employeeGetterId: number
 }

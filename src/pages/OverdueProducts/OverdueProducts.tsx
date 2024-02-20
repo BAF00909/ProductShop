@@ -80,7 +80,7 @@ export const OverdueProductsPage = () => {
     }
     return (
         <>
-            <h1>Продажи</h1>
+            <h1>Списанный товар</h1>
             <Modal
                 title='Добавить запись'
                 open={modalIsOpen}

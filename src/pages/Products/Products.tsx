@@ -89,7 +89,7 @@ export const ProductsPage = () => {
     }
     return (
         <>
-            <h1>Продукты</h1>
+            <h1>Товары</h1>
             <Modal
                 title='Добавить запись'
                 open={modalIsOpen}
