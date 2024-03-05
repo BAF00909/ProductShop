@@ -11,3 +11,17 @@
 .tableTools svg:hover {
     color: #ccc;
 }
+
+.formFilter {
+    display: grid;
+    grid-template-columns: 300px 300px 300px 300px;
+    gap: 15px;
+}
+.formFilterFooter {
+    display: flex;
+    gap: 10px;
+}
+
+.ant-form-item-row-custom {
+    margin-bottom: 10px;
+}

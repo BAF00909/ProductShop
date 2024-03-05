@@ -4,7 +4,7 @@ import { baseApi } from "./api";
 export const productApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllProducts: builder.query<IProductData[], string>({
-            query: () => '/Products'
+            query: (queryStr?: string) => `/Products?${queryStr}`
         }),
         getProductById: builder.query<IProduct, number | string | bigint>({
             query: (id: number | string | bigint) => `/Products/${id}`

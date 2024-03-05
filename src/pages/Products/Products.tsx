@@ -2,16 +2,22 @@ import { AppstoreAddOutlined, EditOutlined, DeleteOutlined } from "@ant-design/i
 import { TableColumnsType, Modal, Table } from "antd";
 import { useState, useMemo } from "react";
 import { useAddProductMutation, useGetAllProductsQuery, useRemoveProductMutation, useUpdateProductMutation } from "../../api/product.api";
-import { IProduct, IProductData } from "../../store/slices/types";
+import { IProductData } from "../../store/slices/types";
 import { Addfrom } from "./AddForm";
 import { Editefrom } from "./EditeForm";
 import styles from './Products.module.css';
 import { format } from "date-fns";
+import { useParams } from "../../hooks/hooks-params";
+import { queryStringFormater } from "../../helpers/queryStringFormater";
+import { Filter } from "./filter";
+import type { CollapseProps } from 'antd';
+import { Collapse } from 'antd';
 
 export const ProductsPage = () => {
     const [modalIsOpen, setOpen] = useState<boolean>(false);
     const [modalEditIsOpen, setModalEdite] = useState<boolean>(false);
-    const { data: products, refetch } = useGetAllProductsQuery('');
+    const { params, setParams } = useParams();
+    const { data: products, refetch } = useGetAllProductsQuery(queryStringFormater(params));
     const [addProduct] = useAddProductMutation();
     const [removeProduct] = useRemoveProductMutation();
     const [updateProduct] = useUpdateProductMutation();
@@ -87,9 +93,20 @@ export const ProductsPage = () => {
             setModalEdite(false);
         }).catch(error => { console.log(error) });
     }
+    const setFilter = (prop: Record<string, any>): void => {
+        setParams(prop);
+    }
+    const items: CollapseProps['items'] = [
+        {
+            key: '1',
+            label: 'Фильтр',
+            children: <Filter setFilter={setFilter} />,
+        },
+    ];
     return (
         <>
             <h1>Товары</h1>
+            <Collapse items={items} />
             <Modal
                 title='Добавить запись'
                 open={modalIsOpen}
